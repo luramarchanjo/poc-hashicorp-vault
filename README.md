@@ -32,11 +32,15 @@ To test the installation run the command `vault` and will appear some options!
 
 Use the vault command to install command-line completions like this.
 
-`vault -autocomplete-install`
+```shell
+vault -autocomplete-install
+```
 
 Once you have installed the completions, you should restart your terminal session or reload the shell to begin using them.
 
-`source ~/.bashrc`
+```shell
+source ~/.bashrc
+```
 
 # Starting the Server
 
