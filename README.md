@@ -6,14 +6,21 @@
 
 # [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install?in=vault/getting-started)
 
+1º Add the hashicorp key
+
 ```shell
-# 1º Add the hashicorp key
 sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+```
 
-# 2º Add the hashicorp repository
+2º Add the hashicorp repository
+
+```shell
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+```
 
-# 3º Update and install vault
+3º Update and install vault
+
+```shell
 sudo apt-get update && sudo apt-get install vault
 ```
 
