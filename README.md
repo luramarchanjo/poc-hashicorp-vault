@@ -151,3 +151,37 @@ version          2
 **Warning**
 
 The examples in this guide use the `<key>=<value>` input to send secrets to Vault. However, sending data as a part of the CLI command often end up in the **shell history unencrypted**. To avoid this, refer to the documentation or [Static Secrets: Key/Value Secrets Engine guide](https://learn.hashicorp.com/tutorials/vault/static-secrets#q-how-do-i-enter-my-secrets-without-exposing-the-secret-in-my-shell-s-history) to learn different approaches.
+
+# [Getting a Secret](https://learn.hashicorp.com/tutorials/vault/getting-started-first-secret?in=vault/getting-started#getting-a-secret)
+
+As you might expect, secrets can be retrieved with `vault kv get`:
+
+```shell
+$ vault kv get secret/hello
+
+====== Metadata ======
+Key              Value
+---              -----
+created_time     2019-02-04T19:54:03.250328Z
+deletion_time    n/a
+destroyed        false
+version          2
+
+===== Data =====
+Key        Value
+---        -----
+excited    yes
+foo        world
+```
+
+Vault gets the data from storage and decrypts it. The output format is purposefully whitespace separated to make it easy to pipe into a tool like `awk`.
+
+# [Deleting a Secret](https://learn.hashicorp.com/tutorials/vault/getting-started-first-secret?in=vault/getting-started#deleting-a-secret)
+
+Now that you've learned how to read and write a secret, let's go ahead and delete it. You can do so using the `vault kv delete` command.
+
+```shell
+$ vault kv delete secret/hello
+
+Success! Data deleted (if it existed) at: secret/hello
+```
