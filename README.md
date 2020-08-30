@@ -116,4 +116,38 @@ HA Enabled      false
 
 **Warning**
 
-Do not run dev server in **production !!!**
+Do not run dev server in **production!**
+
+# [Writing a Secret](https://learn.hashicorp.com/tutorials/vault/getting-started-first-secret?in=vault/getting-started#writing-a-secret)
+
+Let's start by writing a secret. This is done very simply with the `vault kv` command, as shown below:
+
+```shell
+$ vault kv put secret/hello foo=world
+
+Key              Value
+---              -----
+created_time     2019-02-04T19:53:22.730733Z
+deletion_time    n/a
+destroyed        false
+version          1
+```
+
+This writes the pair `foo=world` to the path `secret/hello`!
+
+You can even write multiple pieces of data, as shown below:
+
+```shell
+$ vault kv put secret/hello foo=world excited=yes
+
+Key              Value
+---              -----
+created_time     2019-02-04T19:54:03.250328Z
+deletion_time    n/a
+destroyed        false
+version          2
+```
+
+**Warning**
+
+The examples in this guide use the `<key>=<value>` input to send secrets to Vault. However, sending data as a part of the CLI command often end up in the **shell history unencrypted**. To avoid this, refer to the documentation or [Static Secrets: Key/Value Secrets Engine guide](https://learn.hashicorp.com/tutorials/vault/static-secrets#q-how-do-i-enter-my-secrets-without-exposing-the-secret-in-my-shell-s-history) to learn different approaches.
