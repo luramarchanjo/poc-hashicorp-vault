@@ -44,3 +44,42 @@ source ~/.bashrc
 
 # Starting the Server
 
+First, start a Vault dev server. The dev server is a built-in, pre-configured server that is not very secure but useful for playing with Vault locally.
+
+```shell
+vault server -dev
+```
+
+Now that we start the dev server, launch a new terminal session.
+
+```shell
+export VAULT_ADDR='http://127.0.0.1:8200'
+```
+
+Save the unseal key somewhere. Don't worry about how to save this securely. For now, just save it anywhere.
+
+```shell
+export VAULT_TOKEN="<YOUR ROOT TOKEN HERE>"
+```
+
+Now we need to verify the Server is Running
+
+```shell
+$ vault status
+
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    1
+Threshold       1
+Version         1.5.0
+Cluster Name    vault-cluster-4d862b44
+Cluster ID      92143a5a-0566-be89-f229-5a9f9c47fb1a
+HA Enabled      false
+```
+
+**Warning**
+
+Do not run dev server in **production**
