@@ -29,7 +29,7 @@ sudo apt-get update && sudo apt-get install vault
 To test the installation run the command `vault` and will appear some options!
 
 ```shell
-$vault 
+$ vault 
 
 Usage: vault <command> [args]
 
@@ -116,4 +116,4 @@ HA Enabled      false
 
 **Warning**
 
-Do not run dev server in **production**
+Do not run dev server in **production !!!**
