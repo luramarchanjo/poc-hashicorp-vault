@@ -1,10 +1,38 @@
 # Overview
 
-# Problem
+This is a proof of concept (POC) using [Hashicorp Vault](https://www.vaultproject.io)
 
-# Solution
+# What is Hashicorp Vault?
 
-# Features
+## [Secrets Management](https://www.vaultproject.io/use-cases/secrets-management)
+
+**The Challenge**
+
+Secrets for applications and systems need to be centralized and static IP-based solutions don't scale in dynamic environments with frequently changing applications and machines
+
+**The Solution**
+
+Vault centrally manages and enforces access to secrets and systems based on trusted sources of application and user identity
+
+## [Data Encryption](https://www.vaultproject.io/use-cases/data-encryption)
+
+**The Challenge**
+
+All application data should be encrypted, but deploying a cryptography and key management infrastructure is expensive, hard to develop against, and not cloud or multi-datacenter friendly
+
+**The Solution**
+
+Vault provides encryption as a service with centralized key management to simplify encrypting data in transit and at rest across clouds and data centers
+
+## [Identity-based Access](https://www.vaultproject.io/use-cases/identity-based-access)
+
+**The Challenge**
+
+With the proliferation of different clouds, services, and systems all with their own identity providers, organizations need a way to manage identity sprawl
+
+**The Solution**
+
+Vault merges identities across providers and uses a unified ACL system to broker access to systems and secrets
 
 # [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install?in=vault/getting-started)
 
