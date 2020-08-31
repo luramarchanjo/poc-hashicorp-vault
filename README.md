@@ -4,6 +4,8 @@
 
 # Solution
 
+# Features
+
 # [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install?in=vault/getting-started)
 
 1º Add the hashicorp key
@@ -184,4 +186,66 @@ Now that you've learned how to read and write a secret, let's go ahead and delet
 $ vault kv delete secret/hello
 
 Success! Data deleted (if it existed) at: secret/hello
+```
+
+# [Token authentication](https://learn.hashicorp.com/tutorials/vault/getting-started-authentication?in=vault/getting-started#token-authentication)
+
+Token authentication is automatically enabled. When you started the dev server, the output displayed a root token. The Vault CLI read the root token from the `$VAULT_TOKEN` environment variable. This root token can perform any operation within Vault because it is assigned the `root` policy. One capability is to create new tokens.
+
+```shell
+$ vault token create
+Key                  Value
+---                  -----
+token                s.iyNUhq8Ov4hIAx6snw5mB2nL
+token_accessor       maMfHsZfwLB6fi18Zenj3qh6
+token_duration       ∞
+token_renewable      false
+token_policies       ["root"]
+identity_policies    []
+policies             ["root"]
+```
+
+The token is created and displayed here as `s.iyNUhq8Ov4hIAx6snw5mB2nL`. Each token that Vault creates is unique.
+
+When a token is no longer needed it can be revoked.
+
+Revoke the first token you created.
+
+```shell
+$ vault token revoke s.iyNUhq8Ov4hIAx6snw5mB2nL
+
+Success! Revoked token (if it existed)
+```
+
+Attempt to login with the last token you created.
+
+```shell
+$ vault login s.iyNUhq8Ov4hIAx6snw5mB2nL
+
+Error authenticating: error looking up token: Error making API request.
+
+URL: GET http://127.0.0.1:8200/v1/auth/token/lookup-self
+Code: 403. Errors:
+
+* permission denied
+```
+
+Login with the root token.
+
+```shell
+$ vault login $VAULT_TOKEN
+
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                s.yFgycysoWKJTi9Dw4WcscWiO
+token_accessor       qOWOm47ZHomnpr5klg4vGEEP
+token_duration       ∞
+token_renewable      false
+token_policies       ["root"]
+identity_policies    []
+policies             ["root"]
 ```
