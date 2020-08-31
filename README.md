@@ -44,19 +44,19 @@ Vault merges identities across providers and uses a unified ACL system to broker
 
 1º Add the hashicorp key
 
-```shell
+```shell script
 sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 ```
 
 2º Add the hashicorp repository
 
-```shell
+```shell script
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 ```
 
 3º Update and install vault
 
-```shell
+```shell script
 sudo apt-get update && sudo apt-get install vault
 ```
 
@@ -64,7 +64,7 @@ sudo apt-get update && sudo apt-get install vault
 
 To test the installation run the command `vault` and will appear some options!
 
-```shell
+```shell script
 $ vault 
 
 Usage: vault <command> [args]
@@ -102,13 +102,13 @@ Other commands:
 
 Use the vault command to install command-line completions like this.
 
-```shell
+```shell script
 vault -autocomplete-install
 ```
 
-Once you have installed the completions, you should restart your terminal session or reload the shell to begin using them.
+Once you have installed the completions, you should restart your terminal session or reload the shell script to begin using them.
 
-```shell
+```shell script
 source ~/.bashrc
 ```
 
@@ -116,25 +116,25 @@ source ~/.bashrc
 
 First, start a Vault dev server. The dev server is a built-in, pre-configured server that is not very secure but useful for playing with Vault locally.
 
-```shell
+```shell script
 vault server -dev
 ```
 
 Now that we start the dev server, launch a new terminal session.
 
-```shell
+```shell script
 export VAULT_ADDR='http://127.0.0.1:8200'
 ```
 
 Save the unseal key somewhere. Don't worry about how to save this securely. For now, just save it anywhere.
 
-```shell
+```shell script
 export VAULT_TOKEN="<YOUR ROOT TOKEN HERE>"
 ```
 
 Now we need to verify the Server is Running
 
-```shell
+```shell script
 $ vault status
 
 Key             Value
@@ -158,7 +158,7 @@ Do not run dev server in **production!**
 
 Let's start by writing a secret. This is done very simply with the `vault kv` command, as shown below:
 
-```shell
+```shell script
 $ vault kv put secret/hello foo=world
 
 Key              Value
@@ -173,7 +173,7 @@ This writes the pair `foo=world` to the path `secret/hello`!
 
 You can even write multiple pieces of data, as shown below:
 
-```shell
+```shell script
 $ vault kv put secret/hello foo=world excited=yes
 
 Key              Value
@@ -186,13 +186,13 @@ version          2
 
 **Warning**
 
-The examples in this guide use the `<key>=<value>` input to send secrets to Vault. However, sending data as a part of the CLI command often end up in the **shell history unencrypted**. To avoid this, refer to the documentation or [Static Secrets: Key/Value Secrets Engine guide](https://learn.hashicorp.com/tutorials/vault/static-secrets#q-how-do-i-enter-my-secrets-without-exposing-the-secret-in-my-shell-s-history) to learn different approaches.
+The examples in this guide use the `<key>=<value>` input to send secrets to Vault. However, sending data as a part of the CLI command often end up in the **shell script history unencrypted**. To avoid this, refer to the documentation or [Static Secrets: Key/Value Secrets Engine guide](https://learn.hashicorp.com/tutorials/vault/static-secrets#q-how-do-i-enter-my-secrets-without-exposing-the-secret-in-my-shell script-s-history) to learn different approaches.
 
 # [Getting a Secret](https://learn.hashicorp.com/tutorials/vault/getting-started-first-secret?in=vault/getting-started#getting-a-secret)
 
 As you might expect, secrets can be retrieved with `vault kv get`:
 
-```shell
+```shell script
 $ vault kv get secret/hello
 
 ====== Metadata ======
@@ -216,7 +216,7 @@ Vault gets the data from storage and decrypts it. The output format is purposefu
 
 Now that you've learned how to read and write a secret, let's go ahead and delete it. You can do so using the `vault kv delete` command.
 
-```shell
+```shell script
 $ vault kv delete secret/hello
 
 Success! Data deleted (if it existed) at: secret/hello
@@ -226,7 +226,7 @@ Success! Data deleted (if it existed) at: secret/hello
 
 Token authentication is automatically enabled. When you started the dev server, the output displayed a root token. The Vault CLI read the root token from the `$VAULT_TOKEN` environment variable. This root token can perform any operation within Vault because it is assigned the `root` policy. One capability is to create new tokens.
 
-```shell
+```shell script
 $ vault token create
 
 Key                  Value
@@ -246,7 +246,7 @@ When a token is no longer needed it can be revoked.
 
 Revoke the first token you created.
 
-```shell
+```shell script
 $ vault token revoke s.iyNUhq8Ov4hIAx6snw5mB2nL
 
 Success! Revoked token (if it existed)
@@ -254,7 +254,7 @@ Success! Revoked token (if it existed)
 
 Attempt to login with the last token you created.
 
-```shell
+```shell script
 $ vault login s.iyNUhq8Ov4hIAx6snw5mB2nL
 
 Error authenticating: error looking up token: Error making API request.
@@ -267,7 +267,7 @@ Code: 403. Errors:
 
 Login with the root token.
 
-```shell
+```shell script
 $ vault login $VAULT_TOKEN
 
 Success! You are now authenticated. The token information displayed below
@@ -291,7 +291,7 @@ Policies in Vault control what a user can access. For authentication Vault has m
 
 There are some built-in policies that cannot be removed. For example, the root and `default` policies are required policies and cannot be deleted. The `default` policy provides a common set of permissions and is included on all tokens by default. The `root` policy gives a token super admin permissions, similar to a root user on a linux machine.
 
-```shell
+```shell script
 $ vault policy list
 
 default
@@ -332,7 +332,7 @@ path "secret/data/foo" {
 
 Now that the file is create, write the policy:
 
-```shell
+```shell script
 $ vault policy write my-policy my-policy.hcl
 
 Success! Uploaded policy: my-policy
@@ -340,7 +340,7 @@ Success! Uploaded policy: my-policy
 
 To see the list of policies, execute the following command.
 
-```shell
+```shell script
 $ vault policy list
 
 default
@@ -350,7 +350,7 @@ my-policy
 
 To view the contents of a policy, execute the `vault policy` read command.
 
-```shell
+```shell script
 $ vault policy read my-policy
 
 # Dev servers have version 2 of KV secrets engine mounted by default, so will
@@ -368,7 +368,7 @@ path "secret/data/foo" {
 
 First, check to verify that KV v2 secrets engine has not been enabled at `secret/`.
 
-```shell
+```shell script
 $ vault secrets list
 
 Path          Type         Accessor              Description
@@ -380,13 +380,13 @@ sys/          system       system_ad432442       system endpoints used for contr
 
 If `secret/` is not listed, enable it before proceeding.
 
-```shell
+```shell script
 vault secrets enable -path=secret/ kv-v2
 ```
 
 To use the policy, create a token and assign it to that policy.
 
-```shell
+```shell script
 $ vault token create -policy=my-policy
 
 Key                  Value
@@ -402,7 +402,7 @@ policies             ["default" "my-policy"]
 
 Copy the generated token value and authenticate with Vault.
 
-```shell
+```shell script
 $ vault login s.C0FxR0eDCf1mkb0NzzRuWDO7
 
 Success! You are now authenticated. The token information displayed below
@@ -422,7 +422,7 @@ policies             ["default" "my-policy"]
 
 Verify that you can write any data to `secret/data/`.
 
-```shell
+```shell script
 $ vault kv put secret/creds password="my-long-password"
 
 Key              Value
@@ -435,7 +435,7 @@ version          1
 
 Since my-policy only permits read from the `secret/data/foo` path, any attempt to write fails with "permission denied" error.
 
-```shell
+```shell script
 $ vault kv put secret/foo robot=beepboop
 
 Error writing data to secret/data/foo: Error making API request.
