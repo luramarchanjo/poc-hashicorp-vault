@@ -194,6 +194,7 @@ Token authentication is automatically enabled. When you started the dev server, 
 
 ```shell
 $ vault token create
+
 Key                  Value
 ---                  -----
 token                s.iyNUhq8Ov4hIAx6snw5mB2nL
@@ -249,3 +250,84 @@ token_policies       ["root"]
 identity_policies    []
 policies             ["root"]
 ```
+
+# [Policies](https://learn.hashicorp.com/tutorials/vault/getting-started-policies?in=vault/getting-started)
+
+Policies in Vault control what a user can access. For authentication Vault has multiple options or methods that can be enabled and used. Vault always uses the same format for both authorization and policies. All auth methods map identities back to the core policies that are configured with Vault.
+
+There are some built-in policies that cannot be removed. For example, the root and `default` policies are required policies and cannot be deleted. The `default` policy provides a common set of permissions and is included on all tokens by default. The `root` policy gives a token super admin permissions, similar to a root user on a linux machine.
+
+```shell
+$ vault policy list
+
+default
+root
+```
+
+## [Policy Format](https://learn.hashicorp.com/tutorials/vault/getting-started-policies?in=vault/getting-started#policy-format)
+
+Policies are authored in [HCL](https://github.com/hashicorp/hcl), but are JSON compatible. Here is an example policy:
+
+```
+# Dev servers have version 2 of KV secrets engine mounted by default, so will
+# need these paths to grant permissions:
+path "secret/data/*" {
+  capabilities = ["create", "update"]
+}
+
+path "secret/data/foo" {
+  capabilities = ["read"]
+}
+```
+
+## [Writing the Policy](https://learn.hashicorp.com/tutorials/vault/getting-started-policies?in=vault/getting-started#writing-the-policy)
+
+Let's create the `my-policy.hcl` file, as shown below:
+
+```
+# Dev servers have version 2 of KV secrets engine mounted by default, so will
+# need these paths to grant permissions:
+path "secret/data/*" {
+  capabilities = ["create", "update"]
+}
+
+path "secret/data/foo" {
+  capabilities = ["read"]
+}
+```
+
+Now that the file is create, write the policy:
+
+```shell
+$ vault policy write my-policy my-policy.hcl
+
+Success! Uploaded policy: my-policy
+```
+
+To see the list of policies, execute the following command.
+
+```shell
+$ vault policy list
+
+default
+root
+my-policy
+```
+
+To view the contents of a policy, execute the `vault policy` read command.
+
+```shell
+$ vault policy read my-policy
+
+# Dev servers have version 2 of KV secrets engine mounted by default, so will
+# need these paths to grant permissions:
+path "secret/data/*" {
+  capabilities = ["create", "update"]
+}
+
+path "secret/data/foo" {
+  capabilities = ["read"]
+}
+```
+
+#### [Testing the Policy](https://learn.hashicorp.com/tutorials/vault/getting-started-policies?in=vault/getting-started#testing-the-policy)
