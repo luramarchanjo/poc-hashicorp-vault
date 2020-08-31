@@ -330,4 +330,88 @@ path "secret/data/foo" {
 }
 ```
 
-#### [Testing the Policy](https://learn.hashicorp.com/tutorials/vault/getting-started-policies?in=vault/getting-started#testing-the-policy)
+## [Testing the Policy](https://learn.hashicorp.com/tutorials/vault/getting-started-policies?in=vault/getting-started#testing-the-policy)
+
+First, check to verify that KV v2 secrets engine has not been enabled at `secret/`.
+
+```shell
+$ vault secrets list
+
+Path          Type         Accessor              Description
+----          ----         --------              -----------
+cubbyhole/    cubbyhole    cubbyhole_b81986c7    per-token private secret storage
+identity/     identity     identity_33dc5c7d     identity store
+sys/          system       system_ad432442       system endpoints used for control, policy and debugging
+```
+
+If `secret/` is not listed, enable it before proceeding.
+
+```shell
+vault secrets enable -path=secret/ kv-v2
+```
+
+To use the policy, create a token and assign it to that policy.
+
+```shell
+$ vault token create -policy=my-policy
+
+Key                  Value
+---                  -----
+token                s.C0FxR0eDCf1mkb0NzzRuWDO7
+token_accessor       0B68xBxuxwSMTp1UbxxJEWjf
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "my-policy"]
+identity_policies    []
+policies             ["default" "my-policy"]
+```
+
+Copy the generated token value and authenticate with Vault.
+
+```shell
+$ vault login s.C0FxR0eDCf1mkb0NzzRuWDO7
+
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                s.C0FxR0eDCf1mkb0NzzRuWDO7
+token_accessor       0B68xBxuxwSMTp1UbxxJEWjf
+token_duration       767h59m30s
+token_renewable      true
+token_policies       ["default" "my-policy"]
+identity_policies    []
+policies             ["default" "my-policy"]
+```
+
+Verify that you can write any data to `secret/data/`.
+
+```shell
+$ vault kv put secret/creds password="my-long-password"
+
+Key              Value
+---              -----
+created_time     2020-08-31T11:46:45.186427422Z
+deletion_time    n/a
+destroyed        false
+version          1
+```
+
+Since my-policy only permits read from the `secret/data/foo` path, any attempt to write fails with "permission denied" error.
+
+```shell
+$ vault kv put secret/foo robot=beepboop
+
+Error writing data to secret/data/foo: Error making API request.
+
+URL: PUT http://127.0.0.1:8200/v1/secret/data/foo
+Code: 403. Errors:
+
+* permission denied
+```
+
+# [Web UI](http://127.0.0.1:8200/ui/vault/auth?with=token)
+
+# Be Happy
